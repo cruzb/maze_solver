@@ -1,6 +1,7 @@
 #include "maze.h"
 #include "graph.h"
 #include "breadth.h"
+#include "dijkstra.h"
 #include <iostream>
 #include <string>
 using namespace std;
@@ -9,6 +10,7 @@ int main() {
 	//m.print();
 	//graph g(&m);
 	//g.print();
-	solve_bfs(&m, false);
+	solve_bfs(&m, true);
+	//solve_dijkstra(&g, &m, true);
 	system("pause");
 }

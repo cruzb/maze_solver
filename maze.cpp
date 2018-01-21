@@ -6,7 +6,8 @@
 
 
 maze::maze(std::string filename) {
-	CImg<float> image(filename.c_str());
+	CImg<float> img(filename.c_str());
+	image = img;
 	int height = image.height();
 	int width = image.width();
 
@@ -28,6 +29,7 @@ maze::maze(std::string filename) {
 		for (int c = 0; c < width; c++) {
 			//new node base configuration
 			node* n = new node;
+			n->index = r * grid[0].size() + c;
 			n->row = r;
 			n->col = c;
 			n->visited = false;
@@ -128,6 +130,33 @@ void maze::print() {
 //instead of making a new image and changing it pixel to pixel
 //this is the time limitation on display 
 void maze::output(bool displayVisited, bool save) {
+	//CImg<float> out(grid[0].size(), grid.size(), 1, 3);
+	/*for (int r = 0; r < grid.size(); r++) {
+		for (int c = 0; c < grid[0].size(); c++) {
+			if (grid[r][c]->inSolution) {
+				image(c, r, 0, 0) = 255;
+				image(c, r, 0, 1) = 0;
+				image(c, r, 0, 2) = 0;
+			}
+			else if (grid[r][c]->visited && displayVisited) {
+				image(c, r, 0, 0) = 0;
+				image(c, r, 0, 1) = 0;
+				image(c, r, 0, 2) = 255;
+			}
+			else if (!grid[r][c]->passable) {
+				image(c, r, 0, 0) = 0;
+				image(c, r, 0, 1) = 0;
+				image(c, r, 0, 2) = 0;
+			}
+		}
+	}
+
+	if (save) {
+		image.save("output.bmp");
+		image.display(display);
+	}
+	else
+		image.display(display);*/
 	CImg<float> out(grid[0].size(), grid.size(), 1, 3);
 	for (int r = 0; r < grid.size(); r++) {
 		for (int c = 0; c < grid[0].size(); c++) {
@@ -160,4 +189,27 @@ void maze::output(bool displayVisited, bool save) {
 	}
 	else 
 		out.display(display);
+}
+
+
+void maze::output(node* n) {
+	int r = n->row;
+	int c = n->col;
+	if (n->inSolution) {
+		image(c, r, 0, 0) = 255;
+		image(c, r, 0, 1) = 0;
+		image(c, r, 0, 2) = 0;
+	}
+	else if (n->visited) {
+		image(c, r, 0, 0) = 0;
+		image(c, r, 0, 1) = 0;
+		image(c, r, 0, 2) = 255;
+	}
+	else if (!n->passable) {
+		image(c, r, 0, 0) = 0;
+		image(c, r, 0, 1) = 0;
+		image(c, r, 0, 2) = 0;
+	}
+
+	image.display(display);
 }

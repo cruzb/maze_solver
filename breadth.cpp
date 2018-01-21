@@ -3,24 +3,27 @@
 #include <iostream>
 #include <windows.h>
 
-node* bfs(maze* maze, node* start, node* end, bool displayRealtime) {
+node* bfs(maze* maze, bool displayRealtime) {
+	node* start = maze->get_start();
+	node* end = maze->get_end();
 	std::queue<node*> q;
 	q.push(start);
+
 	node* current;
 	node* next;
 
 	while (!q.empty()) {
-		if (displayRealtime) {
-			maze->output(true, false);
-			//wait between frames only if maze size warrants it
-			//realtime display struggles with larger mazes
-			if(maze->height() * maze->width() < 2000)
-				Sleep(50);
-		}
-		
 		current = q.front();
 		q.pop();
 		current->visited = true;
+
+		if (displayRealtime) {
+			maze->output(current);
+			//wait between frames only if maze size warrants it
+			//realtime display struggles with larger mazes
+			if (maze->height() * maze->width() < 1000)
+				Sleep(50);
+		}
 		
 
 		if (current == end) {
@@ -63,7 +66,7 @@ node* bfs(maze* maze, node* start, node* end, bool displayRealtime) {
 }
 
 void solve_bfs(maze* maze, bool displayRealtime) {
-	node* end = bfs(maze, maze->get_start(), maze->get_end(), displayRealtime);
+	node* end = bfs(maze, displayRealtime);
 	while (end->parent != nullptr) {
 		//std::cout << "row: " << end->row << "    col: " << end->col << std::endl;
 		end->inSolution = true;

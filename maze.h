@@ -23,8 +23,10 @@ public:
 	int width();
 	void print();
 	void output(bool displayVisited, bool save);
+	void output(node* n);
 private:
 	CImgDisplay display;
+	CImg<float> image;
 	node* start;
 	node* end;
 	std::vector<std::vector<node*> > grid;

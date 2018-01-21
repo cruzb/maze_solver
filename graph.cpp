@@ -1,20 +1,34 @@
 #include "graph.h"
+#include "maze.h"
 #include <iostream>
+#include <queue>
 
 graph::graph(maze* maze) {
+	num_nodes = 0;
+	num_edges = 0;
+
 	adjList.resize(maze->height() * maze->width());
 
 	for (int i = 0; i < adjList.size(); i++) {
 		node* n = maze->at(i);
 		if (n->passable) {
-			if (maze->top(n) && maze->top(n)->passable)
+			num_nodes++;
+			if (maze->top(n) && maze->top(n)->passable) {
 				adjList[i].push_back(i - maze->width());
-			if (maze->bottom(n) && maze->bottom(n)->passable)
+				num_edges++;
+			}
+			if (maze->bottom(n) && maze->bottom(n)->passable) {
 				adjList[i].push_back(i + maze->width());
-			if (maze->left(n) && maze->left(n)->passable)
+				num_edges++;
+			}
+			if (maze->left(n) && maze->left(n)->passable) {
 				adjList[i].push_back(i - 1);
-			if (maze->right(n) && maze->right(n)->passable)
+				num_edges++;
+			}
+			if (maze->right(n) && maze->right(n)->passable) {
 				adjList[i].push_back(i + 1);
+				num_edges++;
+			}
 		}
 	}
 
@@ -24,8 +38,20 @@ int graph::size() {
 	return adjList.size();
 }
 
-bool graph::at(int r, int c) {
+std::vector<int>* graph::at(int r) {
+	return &adjList[r];
+}
+
+int graph::at(int r, int c) {
 	return adjList[r][c];
+}
+
+int graph::node_count() {
+	return num_nodes;
+}
+
+int graph::edge_count() {
+	return num_edges;
 }
 
 bool graph::areNeighbors(maze* maze, int r1, int c1, int r2, int c2) {

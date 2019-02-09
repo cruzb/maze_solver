@@ -1,7 +1,7 @@
 # Maze Solver
 Solves mazes by a variety of algorithms. 
 
-### Algorithms
+## Algorithms
 Implements the following:
 * Breadth First Search
 * Depth First Search
@@ -12,7 +12,7 @@ Implements the following:
 * Add command line parameters
 * Makefile
 
-### Usage
+## Usage
 Main entry point in "test.cpp"
 Provide within "test.cpp" a .bmp format maze, and algorithm to use.
 Compile and run with any cpp compiler.
